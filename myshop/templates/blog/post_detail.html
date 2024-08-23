@@ -1,0 +1,79 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+<div class="container post-detail-container">
+    <h1>{{ post.title }}</h1>
+    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid" style="max-width: 100%; height: auto;">
+    <p class="post-content">{{ post.content }}</p>
+    <p class="post-date">Published on: {{ post.created_at|date:"F j, Y" }}</p>
+
+    <hr>
+
+    <h2>Comments</h2>
+    {% for info in comments_info %}
+        <div class="comment-box" style="margin-left: {% if info.comment.parent %}30px{% endif %};">
+            <p><strong>{{ info.comment.user.username }}</strong> said:</p>
+            <p>{{ info.comment.text }}</p>
+            <p>{{ info.comment.created_at|date:"F j, Y, g:i a" }}</p>
+            <div class="comment-actions">
+                {% if user.is_authenticated %}
+                    {% if info.user_liked %}
+                        <a href="{% url 'blog:like_comment' info.comment.id %}" class="btn btn-success">👍 {{ info.likes_count }}</a>
+                    {% else %}
+                        <a href="{% url 'blog:like_comment' info.comment.id %}" class="btn btn-outline-success">👍 {{ info.likes_count }}</a>
+                    {% endif %}
+                    
+                    {% if info.user_disliked %}
+                        <a href="{% url 'blog:dislike_comment' info.comment.id %}" class="btn btn-danger">👎 {{ info.dislikes_count }}</a>
+                    {% else %}
+                        <a href="{% url 'blog:dislike_comment' info.comment.id %}" class="btn btn-outline-danger">👎 {{ info.dislikes_count }}</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'blog:like_comment' info.comment.id %}" class="btn btn-outline-success">👍 {{ info.likes_count }}</a>
+                    <a href="{% url 'blog:dislike_comment' info.comment.id %}" class="btn btn-outline-danger">👎 {{ info.dislikes_count }}</a>
+                {% endif %}
+
+                {% if request.user == info.comment.user or request.user.is_superuser %}
+                    <a href="{% url 'blog:delete_comment' info.comment.id %}" class="btn btn-danger">Delete</a>
+                {% endif %}
+            </div>
+            <a href="#" class="reply-link btn btn-secondary" data-comment-id="{{ info.comment.id }}">Reply</a>
+
+            <!-- Форма ответа -->
+            <div class="reply-form" style="display: none;" data-comment-id="{{ info.comment.id }}">
+                <form method="post" action="{% url 'blog:reply_to_comment' post.id info.comment.id %}">
+                    {% csrf_token %}
+                    {{ reply_form.as_p }}
+                    <button type="submit" class="btn btn-primary">Reply</button>
+                </form>
+            </div>
+        </div>
+    {% empty %}
+        <p>No comments yet.</p>
+    {% endfor %}
+
+    <hr>
+
+    <h3>Leave a Comment</h3>
+    {% if user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    {% else %}
+        <p>You must be <a href="{% url 'login' %}">logged in</a> to leave a comment.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+<script>
+document.querySelectorAll('.reply-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        var commentId = this.dataset.commentId;
+        var replyForm = document.querySelector('.reply-form[data-comment-id="' + commentId + '"]');
+        replyForm.style.display = replyForm.style.display === 'block' ? 'none' : 'block';
+    });
+});
+</script>

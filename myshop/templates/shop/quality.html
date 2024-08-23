@@ -1,0 +1,34 @@
+{% extends "shop/base.html" %}
+{% load static %} 
+{% block title %}Quality{% endblock %}
+
+{% block content %}
+<div class="quality">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="titlepage text_align_center">
+                    <h2>Quality OF Honey For Sale</h2>
+                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                <div class="quality-box">
+                    <figure><img src="{% static 'shop/images/quality1.png' %}" alt="#"></figure>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                <div class="quality-box">
+                    <figure><img src="{% static 'shop/images/quality2.png' %}" alt="#"></figure>
+                </div>
+            </div>
+            <!-- Додаткові блоки якості -->
+            <div class="col-sm-12">
+                <a class="read_more" href="Javascript:void(0)">See More</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

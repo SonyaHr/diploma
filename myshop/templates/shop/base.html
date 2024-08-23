@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>{% block title %}Honey Shop{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'shop/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'shop/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'shop/css/responsive.css' %}">
+    <link rel="icon" href="{% static 'shop/images/fevicon.png' %}" type="image/gif">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="main-layout {% block body_class %}inner_page{% endblock %}">
+    <div class="loader_bg">
+        <div class="loader"><img src="{% static 'shop/images/loading.gif' %}" alt="#"></div>
+    </div>
+    <header>
+        <div class="header">
+            <div class="container-fluid">
+                <div class="row d_flex">
+                    <div class="col-md-2 col-sm-3 col logo_section">
+                        <div class="full">
+                            <div class="center-desk">
+                                <div class="logo">
+                                    <a href="{% url 'index' %}"><img src="{% static 'shop/images/logo1.png' %}" alt="#"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-sm-9">
+                        <nav class="navigation navbar navbar-expand-md navbar-dark">
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarsExample04">
+                                <ul class="navbar-nav mr-auto">
+                                    <li class="nav-item {% if request.path == '/' %}active{% endif %}">
+                                        <a class="nav-link" href="{% url 'index' %}">Home</a>
+                                    </li>
+                                    <li class="nav-item {% if request.path == '/about/' %}active{% endif %}">
+                                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                                    </li>
+                                    <li class="nav-item {% if request.path == '/shop/' %}active{% endif %}">
+                                        <a class="nav-link" href="{% url 'shop' %}">Shop</a>
+                                    </li>
+                                    <li class="nav-item {% if request.path == '/quality/' %}active{% endif %}">
+                                        <a class="nav-link" href="{% url 'quality' %}">Quality</a>
+                                    </li>
+                                    <li class="nav-item {% if request.path == '/contact/' %}active{% endif %}">
+                                        <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                                    </li>
+                                    <li class="nav-item {% if request.path == '/blog/' %}active{% endif %}">
+                                        <a class="nav-link" href="{% url 'blog:post_list' %}">Blog</a>
+                                    </li>
+                                    <li class="nav-item {% if request.path == '/cart/' %}active{% endif %}">
+                                        <a class="nav-link" href="{% url 'cart:cart_detail' %}">Cart</a>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="col-md-2">
+                        <ul class="email text_align_right">
+                            {% if user.is_authenticated %}
+                                <li>
+                                    <a href="{% url 'profile' %}">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'logout' %}">
+                                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a href="{% url 'login' %}">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'register' %}">
+                                        <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-search" style="cursor: pointer;" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+   <!--  footer -->
+<footer>
+    <div class="footer">
+       <div class="container">
+          <div class="row">
+             <div class="col-md-3 col-sm-6">
+                <div class="infoma text_align_left">
+                   <h3>About</h3>
+                   <p class="ipsum">Here you can add a brief description about your store or company.</p>
+                   <ul class="social_icon">
+                      <li><a href="https://facebook.com"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                      <li><a href="https://twitter.com"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                      <li><a href="https://linkedin.com"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
+                      <li><a href="https://instagram.com"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                   </ul>
+                </div>
+             </div>
+             <div class="col-md-3 col-sm-6">
+                <div class="infoma">
+                   <h3>Address</h3>
+                   <ul class="conta">
+                      <li>123 Main Street, Your City</li>
+                      <li>(+123) 456-7890</li>
+                      <li><a href="mailto:demo@example.com">demo@example.com</a></li>
+                   </ul>
+                </div>
+             </div>
+             <div class="col-md-3 col-sm-6">
+                <div class="infoma">
+                   <h3>Links</h3>
+                   <ul class="fullink">
+                      <li><a href="{% url 'index' %}">Home</a></li>
+                      <li><a href="{% url 'about' %}">About</a></li>
+                      <li><a href="{% url 'shop' %}">Shop</a></li>
+                      <li><a href="{% url 'quality' %}">Quality</a></li>
+                      <li><a href="{% url 'contact' %}">Contact</a></li>
+                      <li><a href="{% url 'blog:post_list' %}">Blog</a></li>
+                   </ul>
+                </div>
+             </div>
+             <div class="col-md-3 col-sm-6">
+                <div class="infoma">
+                   <h3>Newsletter</h3>
+                   <form class="form_subscri">
+                      <div class="row">
+                         <div class="col-md-12">
+                            <input class="newsl" placeholder="Your Name" type="text" name="Your Name">
+                         </div>
+                         <div class="col-md-12">
+                            <input class="newsl" placeholder="Email" type="email" name="Email">
+                         </div>
+                         <div class="col-md-12">
+                            <button class="subsci_btn">Subscribe</button>
+                         </div>
+                      </div>
+                   </form>
+                </div>
+             </div>
+          </div>
+       </div>
+       <div class="copyright">
+          <div class="container">
+             <div class="row">
+                <div class="col-md-12">
+                   <p>© 2024 All Rights Reserved.  <a href="https://html.design/"> Free HTML Templates</a></p>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </footer>
+ <!-- end footer -->
+ 
+    <script src="{% static 'shop/js/jquery.min.js' %}"></script>
+    <script src="{% static 'shop/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'shop/js/custom.js' %}"></script>
+</body>
+</html>

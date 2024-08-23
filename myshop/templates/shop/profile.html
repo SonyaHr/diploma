@@ -1,0 +1,30 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container profile-container mt-4">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            {% if user.userprofile.avatar %}
+                <img src="{{ user.userprofile.avatar.url }}" alt="{{ user.username }}" class="profile-avatar img-fluid rounded-circle">
+            {% else %}
+                <p>No avatar available.</p>
+            {% endif %}
+        </div>
+
+        <div class="col-md-8">
+            <h2 class="mb-3">Welcome, {{ user.username }}</h2>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Phone:</strong> {{ user.userprofile.phone }}</p>
+            <p><strong>Birthdate:</strong> {{ user.userprofile.birthdate }}</p>
+            <p><strong>Address:</strong> {{ user.userprofile.address }}</p>
+            <p><strong>City:</strong> {{ user.userprofile.city }}</p>
+            <p><strong>Country:</strong> {{ user.userprofile.country }}</p>
+
+            <a href="{% url 'edit_profile' %}" class="btn btn-primary mt-3">Edit Profile</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
