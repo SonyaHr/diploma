@@ -1,0 +1,50 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}Your Cart{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Your Cart</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.total_price }}</td>
+                <td>
+                    <a href="{% url 'cart:remove_from_cart' item.id %}" class="btn btn-danger">Remove</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Загальна сума до застосування купона -->
+    <h3>Total: ${{ total_price }}</h3>
+
+    <!-- Відображення знижки, якщо застосований купон -->
+    {% if discount %}
+    <h4>Discount Applied: -${{ discount }}</h4>
+    <h4>Final Total: ${{ total_price }}</h4>
+    {% endif %}
+
+    <hr>
+    
+    <h3>Apply Coupon</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ coupon_form.as_p }}
+        <button type="submit" class="btn btn-primary">Apply</button>
+    </form>
+</div>
+{% endblock %}
