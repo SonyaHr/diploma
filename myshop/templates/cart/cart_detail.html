@@ -6,6 +6,16 @@
 {% block content %}
 <div class="container">
     <h2>Your Cart</h2>
+    
+    <!-- Отображение сообщений -->
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    
     <table class="table">
         <thead>
             <tr>
@@ -28,23 +38,42 @@
             {% endfor %}
         </tbody>
     </table>
-    
-    <!-- Загальна сума до застосування купона -->
+
+    <!-- Общая сумма до применения купона -->
     <h3>Total: ${{ total_price }}</h3>
 
-    <!-- Відображення знижки, якщо застосований купон -->
-    {% if discount %}
-    <h4>Discount Applied: -${{ discount }}</h4>
-    <h4>Final Total: ${{ total_price }}</h4>
+    <!-- Отображение скидки, если купон применен -->
+    {% if discount_amount > 0 %}
+    <h4>Discount Applied: -${{ discount_amount }}</h4>
+    <h4>Discounted Total: ${{ discounted_total }}</h4>
     {% endif %}
 
+    <!-- Доставка -->
+    <h3>Shipping Information</h3>
+    <form method="post" action="{% url 'cart:update_shipping' %}">
+        {% csrf_token %}
+        {{ shipping_form.as_p }}
+        <button type="submit" class="btn btn-primary">Update Shipping</button>
+    </form>
+
+    <!-- Общая стоимость с учетом доставки -->
     <hr>
-    
+    <h3>Final Total</h3>
+    <p>Total after discount: ${{ discounted_total }}</p>
+    <p>Shipping Cost: ${{ shipping_cost }}</p>
+    <p><strong>Grand Total: ${{ grand_total }}</strong></p>
+
+    <hr>
+
     <h3>Apply Coupon</h3>
-    <form method="post">
+    <form method="post" action="{% url 'cart:apply_coupon' %}">
         {% csrf_token %}
         {{ coupon_form.as_p }}
         <button type="submit" class="btn btn-primary">Apply</button>
+    </form>
+    <form method="post" action="{% url 'cart:place_order' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Place Order</button>
     </form>
 </div>
 {% endblock %}

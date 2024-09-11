@@ -1,25 +1,54 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product,  Comment, CommentVote
-from cart.models import Cart, CartItem 
+from .models import Product, Comment, CommentVote, NewsletterSubscription
+from cart.models import Cart, CartItem
 from cart.forms import CartAddProductForm 
-from .forms import UserRegisterForm, CommentForm, UserProfileForm, UserUpdateForm
+from .forms import UserRegisterForm, CommentForm, UserProfileForm, UserUpdateForm, NewsletterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.http import JsonResponse
-from django.core.paginator import Paginator, Page
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.utils import timezone
+from django.contrib import messages
 
 # Головна сторінка
 def index(request):
-    return render(request, 'shop/index.html')
+    now = timezone.now()
+    featured_products = Product.objects.filter(
+        discount_price__isnull=False,
+        discount_start_date__lte=now,
+        discount_end_date__gte=now
+    )[:3] 
 
+    return render(request, 'shop/index.html', {
+        'featured_products': featured_products,
+    })
 # Сторінка магазину
 def shop(request):
-    return render(request, 'shop/shop.html')
+    category_filter = request.GET.get('category', None)
+    search_query = request.GET.get('search', '')
+    products = Product.objects.all()
+    if category_filter:
+        products = products.filter(category=category_filter)
+
+    if search_query:
+        products = products.filter(
+            Q(name__icontains=search_query) | 
+            Q(description__icontains=search_query)
+        )
+    paginator = Paginator(products, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'shop/shop.html', {
+        'products': page_obj,
+        'category_choices': Product.CATEGORY_CHOICES,
+        'selected_category': category_filter,
+    })
 
 # Додавання товару в кошик
 @login_required
-def add_to_cart (request, product_id):
+def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart, _ = Cart.objects.get_or_create(user=request.user)
     form = CartAddProductForm(request.POST)
@@ -50,11 +79,6 @@ def remove_from_cart(request, item_id):
     cart_item = get_object_or_404(CartItem, id=item_id)
     cart_item.delete()
     return redirect('cart_detail')
-
-# отримання всіх продуктів із бази даних і передача їх у шаблон
-def shop(request):
-    products = Product.objects.all()
-    return render(request, 'shop/shop.html', {'products': products})
 
 # Реєстрація користувача
 def register(request):
@@ -105,10 +129,9 @@ def profile_view(request):
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    comments = product.comments.all()  # Отримання всіх коментарів до продукту
-
+    comments = product.comments.all() 
     if request.method == 'POST':
-        if request.user.is_authenticated:  # Перевірка на авторизацію
+        if request.user.is_authenticated:
             comment_form = CommentForm(request.POST)
             if comment_form.is_valid():
                 comment = comment_form.save(commit=False)
@@ -117,13 +140,12 @@ def product_detail(request, product_id):
                 comment.save()
                 return redirect('product_detail', product_id=product.id)
         else:
-            # Перенаправлення на сторінку логіну, якщо користувач не авторизований
             return redirect('login')
     else:
         comment_form = CommentForm()
 
     # Пагінація
-    paginator = Paginator(comments, 10)  # Показываем по 10 комментариев на странице
+    paginator = Paginator(comments, 10) 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -137,53 +159,47 @@ def product_detail(request, product_id):
 def like_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
 
-    # Проверка существующего голосования
     existing_vote = CommentVote.objects.filter(user=request.user, comment=comment).first()
     if existing_vote:
         if existing_vote.vote_type == 'like':
-            return JsonResponse({'error': 'Ви вже проголосували.'})
+            return JsonResponse({'error': 'Вы уже проголосовали.'})  
         elif existing_vote.vote_type == 'dislike':
             existing_vote.delete()
             CommentVote.objects.create(user=request.user, comment=comment, vote_type='like')
     else:
         CommentVote.objects.create(user=request.user, comment=comment, vote_type='like')
 
-    # Обновляем количество лайков и дизлайков
     comment.likes = CommentVote.objects.filter(comment=comment, vote_type='like').count()
     comment.dislikes = CommentVote.objects.filter(comment=comment, vote_type='dislike').count()
     comment.save()
 
     return JsonResponse({
-        'success': 'Вашу оцінку враховано',
         'likes': comment.likes,
         'dislikes': comment.dislikes
-    })
+    }) 
 
 @login_required
 def dislike_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
 
-    # Проверка существующего голосования
     existing_vote = CommentVote.objects.filter(user=request.user, comment=comment).first()
     if existing_vote:
         if existing_vote.vote_type == 'dislike':
-            return JsonResponse({'error': 'Ви вже проголосували.'})
+            return JsonResponse({'error': 'Вы уже проголосовали.'})  
         elif existing_vote.vote_type == 'like':
             existing_vote.delete()
             CommentVote.objects.create(user=request.user, comment=comment, vote_type='dislike')
     else:
         CommentVote.objects.create(user=request.user, comment=comment, vote_type='dislike')
 
-    # Обновляем количество лайков и дизлайков
     comment.likes = CommentVote.objects.filter(comment=comment, vote_type='like').count()
     comment.dislikes = CommentVote.objects.filter(comment=comment, vote_type='dislike').count()
     comment.save()
 
     return JsonResponse({
-        'success': 'Вашу оцінку враховано.',
         'likes': comment.likes,
         'dislikes': comment.dislikes
-    })
+    })  
 
 @login_required
 def edit_profile(request):
@@ -203,3 +219,19 @@ def edit_profile(request):
         'user_form': user_form,
         'profile_form': profile_form
     })
+    
+def subscribe_newsletter(request):
+    if request.method == 'POST':
+        form = NewsletterForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            if NewsletterSubscription.objects.filter(email=email).exists():
+                messages.error(request, 'This email is already subscribed.')
+            else:
+                form.save()
+                messages.success(request, 'You have been successfully subscribed to the newsletter.')
+            return redirect('index') 
+    else:
+        form = NewsletterForm()
+    return render(request, 'shop/newsletter_form.html', {'form': form})
+

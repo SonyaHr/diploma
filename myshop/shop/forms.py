@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Comment, UserProfile
+from .models import Comment, UserProfile, NewsletterSubscription
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -47,3 +47,8 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email']
+        
+class NewsletterForm(forms.ModelForm):
+    class Meta:
+        model = NewsletterSubscription
+        fields = ['email']

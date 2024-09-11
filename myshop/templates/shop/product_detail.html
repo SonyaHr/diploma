@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Details</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</head>
-<body>
+{% extends "shop/base.html" %}
+
+{% block title %}Product Details{% endblock %}
+
+{% block content %}
 <div class="container product-detail-container mt-4">
     <div class="row">
         <div class="col-md-6">
@@ -20,11 +14,25 @@
             <p class="product-volume"><strong>Volume:</strong> {{ product.volume }} ml</p>
             <p class="product-origin"><strong>Origin:</strong> {{ product.origin }}</p>
             <p class="product-certification"><strong>Certification:</strong> {{ product.certification }}</p>
-            <p class="product-price"><strong>Price:</strong> ${{ product.price }}</p>
+
+            {% if product.has_discount %}
+                <p class="product-price">
+                    <strong>Price:</strong> 
+                    <span class="original-price" style="text-decoration: line-through; color: red;">${{ product.price }}</span>
+                    <span class="discount-price" style="font-weight: bold;">${{ product.discount_price }}</span>
+                </p>
+            {% else %}
+                <p class="product-price"><strong>Price:</strong> ${{ product.price }}</p>
+            {% endif %}
+
             <p class="product-description">{{ product.description }}</p>
 
             <form method="post" action="{% url 'cart:add_to_cart' product.id %}">
                 {% csrf_token %}
+                <div class="form-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" value="1" class="form-control">
+                </div>
                 <button type="submit" class="btn btn-success mt-3">Add to Cart</button>
             </form>
         </div>
@@ -42,7 +50,6 @@
                 <div class="comment-actions">
                     {% if user.is_authenticated %}
                         <button class="btn {% if comment.id in user_likes %}btn-success{% else %}btn-outline-success{% endif %} like-button" data-comment-id="{{ comment.id }}">👍 {{ comment.likes }}</button>
-
                         <button class="btn {% if comment.id in user_dislikes %}btn-danger{% else %}btn-outline-danger{% endif %} dislike-button" data-comment-id="{{ comment.id }}">👎 {{ comment.dislikes }}</button>
                     {% else %}
                         <button class="btn btn-outline-success like-button" data-comment-id="{{ comment.id }}">👍 {{ comment.likes }}</button>
@@ -69,7 +76,6 @@
     {% endif %}
 </div>
 
-<!-- Bootstrap Modal -->
 <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -87,6 +93,7 @@
     </div>
 </div>
 
+{% block extra_scripts %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.like-button').forEach(button => {
@@ -111,28 +118,13 @@
                 body: JSON.stringify({})
             }).then(response => response.json())
                 .then(data => {
-                    console.log(data); // Check what data is returned
-                    showMessage(data);
-                    if (data.success) {
+                    if (data.likes !== undefined && data.dislikes !== undefined) {
                         updateVotes(commentId, data.likes, data.dislikes);
+                    } else if (data.error) {
+                        console.log('Error:', data.error); // Зберігаємо повідомлення про помилку в консолі
                     }
                 })
                 .catch(error => console.error('Error:', error));
-        }
-
-        function showMessage(data) {
-            const messageModal = document.getElementById('messageModal');
-            const messageText = document.getElementById('messageText');
-
-            if (data.error) {
-                console.log('Error:', data.error);
-                messageText.textContent = data.error;
-            } else if (data.success) {
-                console.log('Success:', data.success);
-                messageText.textContent = data.success;
-            }
-
-            new bootstrap.Modal(messageModal).show();
         }
 
         function updateVotes(commentId, likes, dislikes) {
@@ -141,5 +133,6 @@
         }
     });
 </script>
-</body>
-</html>
+{% endblock %}
+
+{% endblock %}

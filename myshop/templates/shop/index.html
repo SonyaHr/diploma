@@ -4,6 +4,7 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+<!-- Hero Slider -->
 <div class="slider_main">
     <div class="container-fluid">
         <div class="row">
@@ -20,9 +21,9 @@
                                 <div class="row d_flex">
                                     <div class="col-md-7">
                                         <div class="board">
-                                            <h3>You can Get Pure Honey Here</h3>
-                                            <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered</p>
-                                            <a class="read_more" href="{% url 'contact' %}">Contact</a>
+                                            <h3>Discover the Purest Honey</h3>
+                                            <p>Experience the best honey with our exclusive selection.</p>
+                                            <a class="read_more" href="{% url 'contact' %}">Contact Us</a>
                                         </div>
                                     </div>
                                     <div class="col-md-5">
@@ -33,7 +34,25 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Additional slides here -->
+                        <!-- Additional slides -->
+                        <div class="carousel-item">
+                            <div class="carousel-caption relative">
+                                <div class="row d_flex">
+                                    <div class="col-md-7">
+                                        <div class="board">
+                                            <h3>Pure Honey Straight from the Hive</h3>
+                                            <p>We bring you honey directly from the hive to ensure purity and quality.</p>
+                                            <a class="read_more" href="{% url 'shop' %}">Shop Now</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="banner_img">
+                                            <figure><img class="img_responsive" src="{% static 'shop/images/banner_img_2.png' %}" alt="Banner Image 2"></figure>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                         <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
@@ -49,23 +68,71 @@
     </div>
 </div>
 
+<!-- Featured Products Section -->
+<div class="featured-products py-5">
+    <div class="container">
+        <h2 class="text-center">Special offers</h2>
+        <div class="row">
+            {% for product in featured_products %}
+                <div class="col-md-4 mb-4">
+                    <div class="product-card card">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            {% if product.has_discount %}
+                                <p class="card-text">
+                                    <span class="original-price">${{ product.price }}</span>
+                                    <span class="discounted-price">${{ product.discount_price }}</span>
+                                    <span class="discount-label">Discount!</span>
+                                </p>
+                            {% else %}
+                                <p class="card-text">${{ product.price }}</p>
+                            {% endif %}
+                            <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No special offers available at the moment.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
 <!-- About Section -->
-<div class="about">
+<div class="about py-5">
     <div class="container">
         <div class="row d_flex">
             <div class="col-md-6">
                 <div class="titlepage text_align_left">
                     <h2>About Our Honey</h2>
-                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered.</p>
+                    <p>Discover the richness of our honey, carefully sourced and processed to bring you the finest taste.</p>
                     <a class="read_more" href="{% url 'about' %}">Read More</a>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="about_img text_align_center">
-                    <figure><img class="img_responsive" src="{% static 'shop/images/about.png' %}" alt="About Us"></figure>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Testimonials Section -->
+<div class="testimonials py-5">
+    <div class="container">
+        <h2 class="text-center">What Our Customers Say</h2>
+        <div class="row">
+            {% for testimonial in testimonials %}
+                <div class="col-md-4 mb-4">
+                    <div class="testimonial card">
+                        <div class="card-body">
+                            <p class="card-text">"{{ testimonial.text }}"</p>
+                            <h5 class="card-title">- {{ testimonial.author }}</h5>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No testimonials available at the moment.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
 {% endblock %}

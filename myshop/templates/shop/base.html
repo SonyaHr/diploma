@@ -62,126 +62,122 @@
                                     <li class="nav-item {% if request.path == '/cart/' %}active{% endif %}">
                                         <a class="nav-link" href="{% url 'cart:cart_detail' %}">Cart</a>
                                     </li>
-                                    
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                    <div class="col-md-2">
-                        <ul class="email text_align_right">
-                            {% if user.is_authenticated %}
-                                <li>
-                                    <a href="{% url 'profile' %}">
-                                        <i class="fa fa-user" aria-hidden="true"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'logout' %}">
-                                        <i class="fa fa-sign-out" aria-hidden="true"></i>
-                                    </a>
-                                </li>
-                            {% else %}
-                                <li>
-                                    <a href="{% url 'login' %}">
-                                        <i class="fa fa-user" aria-hidden="true"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'register' %}">
-                                        <i class="fa fa-user-plus" aria-hidden="true"></i>
-                                    </a>
-                                </li>
-                            {% endif %}
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-search" style="cursor: pointer;" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <div class="content">
-        {% block content %}
-        {% endblock %}
-    </div>
-   <!--  footer -->
-<footer>
-    <div class="footer">
-       <div class="container">
-          <div class="row">
-             <div class="col-md-3 col-sm-6">
-                <div class="infoma text_align_left">
-                   <h3>About</h3>
-                   <p class="ipsum">Here you can add a brief description about your store or company.</p>
-                   <ul class="social_icon">
-                      <li><a href="https://facebook.com"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                      <li><a href="https://twitter.com"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                      <li><a href="https://linkedin.com"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
-                      <li><a href="https://instagram.com"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
-                   </ul>
-                </div>
+                                 </ul>
+                             </div>
+                         </nav>
+                     </div>
+                     <div class="col-md-2">
+                         <ul class="email text_align_right">
+                             {% if user.is_authenticated %}
+                                 <li>
+                                     <a href="{% url 'profile' %}">
+                                         <i class="fa fa-user" aria-hidden="true"></i>
+                                     </a>
+                                 </li>
+                                 <li>
+                                     <a href="{% url 'logout' %}">
+                                         <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                     </a>
+                                 </li>
+                             {% else %}
+                                 <li>
+                                     <a href="{% url 'login' %}">
+                                         <i class="fa fa-user" aria-hidden="true"></i>
+                                     </a>
+                                 </li>
+                                 <li>
+                                     <a href="{% url 'register' %}">
+                                         <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                     </a>
+                                 </li>
+                             {% endif %}
+                             <li>
+                                 <a href="#">
+                                     <i class="fa fa-search" style="cursor: pointer;" aria-hidden="true"></i>
+                                 </a>
+                             </li>
+                         </ul>
+                     </div>
+                 </div>
              </div>
-             <div class="col-md-3 col-sm-6">
-                <div class="infoma">
-                   <h3>Address</h3>
-                   <ul class="conta">
-                      <li>123 Main Street, Your City</li>
-                      <li>(+123) 456-7890</li>
-                      <li><a href="mailto:demo@example.com">demo@example.com</a></li>
-                   </ul>
-                </div>
-             </div>
-             <div class="col-md-3 col-sm-6">
-                <div class="infoma">
-                   <h3>Links</h3>
-                   <ul class="fullink">
-                      <li><a href="{% url 'index' %}">Home</a></li>
-                      <li><a href="{% url 'about' %}">About</a></li>
-                      <li><a href="{% url 'shop' %}">Shop</a></li>
-                      <li><a href="{% url 'quality' %}">Quality</a></li>
-                      <li><a href="{% url 'contact' %}">Contact</a></li>
-                      <li><a href="{% url 'blog:post_list' %}">Blog</a></li>
-                   </ul>
-                </div>
-             </div>
-             <div class="col-md-3 col-sm-6">
-                <div class="infoma">
-                   <h3>Newsletter</h3>
-                   <form class="form_subscri">
-                      <div class="row">
-                         <div class="col-md-12">
-                            <input class="newsl" placeholder="Your Name" type="text" name="Your Name">
+         </div>
+     </header>
+     <div class="content">
+         {% block content %}
+         {% endblock %}
+     </div>
+     <!-- footer -->
+     <footer>
+         <div class="footer">
+             <div class="container">
+                 <div class="row">
+                     <div class="col-md-3 col-sm-6">
+                         <div class="infoma text_align_left">
+                             <h3>About</h3>
+                             <p class="ipsum">Here you can add a brief description about your store or company.</p>
+                             <ul class="social_icon">
+                                 <li><a href="https://facebook.com"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                 <li><a href="https://twitter.com"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                 <li><a href="https://linkedin.com"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
+                                 <li><a href="https://instagram.com"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                             </ul>
                          </div>
-                         <div class="col-md-12">
-                            <input class="newsl" placeholder="Email" type="email" name="Email">
+                     </div>
+                     <div class="col-md-3 col-sm-6">
+                         <div class="infoma">
+                             <h3>Address</h3>
+                             <ul class="conta">
+                                 <li>123 Main Street, Your City</li>
+                                 <li>(+123) 456-7890</li>
+                                 <li><a href="mailto:demo@example.com">demo@example.com</a></li>
+                             </ul>
                          </div>
-                         <div class="col-md-12">
-                            <button class="subsci_btn">Subscribe</button>
+                     </div>
+                     <div class="col-md-3 col-sm-6">
+                         <div class="infoma">
+                             <h3>Links</h3>
+                             <ul class="fullink">
+                                 <li><a href="{% url 'index' %}">Home</a></li>
+                                 <li><a href="{% url 'about' %}">About</a></li>
+                                 <li><a href="{% url 'shop' %}">Shop</a></li>
+                                 <li><a href="{% url 'quality' %}">Quality</a></li>
+                                 <li><a href="{% url 'contact' %}">Contact</a></li>
+                                 <li><a href="{% url 'blog:post_list' %}">Blog</a></li>
+                             </ul>
                          </div>
-                      </div>
-                   </form>
-                </div>
+                     </div>
+                     <div class="col-md-3 col-sm-6">
+                         <div class="infoma">
+                             <h3>Newsletter</h3>
+                             <form class="form_subscri" method="post" action="{% url 'subscribe_newsletter' %}">
+                                 {% csrf_token %}
+                                 <div class="row">
+                                     <div class="col-md-12">
+                                         <input class="newsl" placeholder="Email" type="email" name="email" required>
+                                     </div>
+                                     <div class="col-md-12">
+                                         <button class="subsci_btn" type="submit">Subscribe</button>
+                                     </div>
+                                 </div>
+                             </form>
+                         </div>
+                     </div>
+                 </div>
              </div>
-          </div>
-       </div>
-       <div class="copyright">
-          <div class="container">
-             <div class="row">
-                <div class="col-md-12">
-                   <p>© 2024 All Rights Reserved.  <a href="https://html.design/"> Free HTML Templates</a></p>
-                </div>
+             <div class="copyright">
+                 <div class="container">
+                     <div class="row">
+                         <div class="col-md-12">
+                             <p>© 2024 All Rights Reserved. <a href="https://html.design/"></a></p>
+                         </div>
+                     </div>
+                 </div>
              </div>
-          </div>
-       </div>
-    </div>
- </footer>
- <!-- end footer -->
- 
-    <script src="{% static 'shop/js/jquery.min.js' %}"></script>
-    <script src="{% static 'shop/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'shop/js/custom.js' %}"></script>
-</body>
-</html>
+         </div>
+     </footer>
+     <!-- end footer -->
+     <script src="{% static 'shop/js/jquery.min.js' %}"></script>
+     <script src="{% static 'shop/js/bootstrap.bundle.min.js' %}"></script>
+     <script src="{% static 'shop/js/custom.js' %}"></script>
+ </body>
+ </html>

@@ -1,0 +1,16 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}Order Confirmation{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Order Confirmation</h2>
+    
+    <p>Thank you for your order!</p>
+    <p>Your order number is {{ order.id }}.</p>
+    <p>Total Price: ${{ order.total_price }}</p>
+    <p>Shipping Cost: ${{ order.shipping_cost }}</p>
+    <p>Grand Total: ${{ order.grand_total }}</p>
+</div>
+{% endblock %}
