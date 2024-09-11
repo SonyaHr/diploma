@@ -36,3 +36,4 @@ class CommentVote(models.Model):
 
     class Meta:
         unique_together = ('user', 'comment', 'vote_type')
+        

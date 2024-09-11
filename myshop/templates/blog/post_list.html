@@ -5,12 +5,20 @@
 <div class="container">
     <h1>Blog Posts</h1>
 
+    {% if user.is_authenticated %}
+        <div class="mb-4">
+            <a href="{% url 'blog:post_create' %}" class="btn btn-success">Add New Post</a>
+        </div>
+    {% endif %}
+
     {% if posts %}
         <div class="row">
             {% for post in posts %}
                 <div class="col-md-4">
                     <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" src="{{ post.image.url }}" alt="{{ post.title }}">
+                        {% if post.image %}
+                            <img class="card-img-top" src="{{ post.image.url }}" alt="{{ post.title }}">
+                        {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">{{ post.title }}</h5>
                             <p class="card-text">{{ post.content|truncatewords:20 }}</p>
