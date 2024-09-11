@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from .views import subscribe_newsletter
 
 urlpatterns = [
     path('', views.index, name='index'),  # Головна сторінка
@@ -16,4 +17,5 @@ urlpatterns = [
     path('comment/like/<int:comment_id>/', views.like_comment, name='like_comment'),
     path('comment/dislike/<int:comment_id>/', views.dislike_comment, name='dislike_comment'),
     path('profile/edit/', views.edit_profile, name='edit_profile'),
+    path('subscribe/', subscribe_newsletter, name='subscribe_newsletter'),
 ]

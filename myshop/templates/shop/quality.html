@@ -1,5 +1,6 @@
 {% extends "shop/base.html" %}
-{% load static %} 
+{% load static %}
+
 {% block title %}Quality{% endblock %}
 
 {% block content %}
@@ -8,25 +9,48 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="titlepage text_align_center">
-                    <h2>Quality OF Honey For Sale</h2>
-                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered.</p>
+                    <h2>Quality Of Honey For Sale</h2>
+                    <p>Our honey is sourced from the finest locations, ensuring purity and unmatched taste. Explore our range to find the quality you deserve.</p>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
                 <div class="quality-box">
-                    <figure><img src="{% static 'shop/images/quality1.png' %}" alt="#"></figure>
+                    <figure><img src="{% static 'shop/images/quality1.png' %}" alt="Quality 1"></figure>
+                    <div class="quality-info">
+                        <h4>Pure Ingredients</h4>
+                        <p>We use only natural ingredients to ensure the highest quality of honey.</p>
+                    </div>
                 </div>
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
                 <div class="quality-box">
-                    <figure><img src="{% static 'shop/images/quality2.png' %}" alt="#"></figure>
+                    <figure><img src="{% static 'shop/images/quality2.png' %}" alt="Quality 2"></figure>
+                    <div class="quality-info">
+                        <h4>Expert Processing</h4>
+                        <p>Our honey is carefully processed to preserve its natural benefits and flavor.</p>
+                    </div>
                 </div>
             </div>
-            <!-- Додаткові блоки якості -->
-            <div class="col-sm-12">
-                <a class="read_more" href="Javascript:void(0)">See More</a>
+            <!-- Additional Quality Blocks -->
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                <div class="quality-box">
+                    <figure><img src="{% static 'shop/images/quality3.png' %}" alt="Quality 3"></figure>
+                    <div class="quality-info">
+                        <h4>Eco-Friendly Practices</h4>
+                        <p>We prioritize sustainability and eco-friendly practices in our production process.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                <div class="quality-box">
+                    <figure><img src="{% static 'shop/images/quality4.png' %}" alt="Quality 4"></figure>
+                    <div class="quality-info">
+                        <h4>Exceptional Taste</h4>
+                        <p>Experience the exceptional taste of our honey, loved by many.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
